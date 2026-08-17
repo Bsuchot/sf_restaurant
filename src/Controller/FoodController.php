@@ -8,63 +8,72 @@ use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/api/food', name: 'app_api_food')]
 class FoodController extends AbstractController
 {
-    public function __construct(private EntityManagerInterface $manager, private FoodRepository $repository)
-    {
+    public function __construct(
+        private EntityManagerInterface $manager,
+        private FoodRepository $repository,
+        private SerializerInterface $serializer,
+        private UrlGeneratorInterface $urlGenerator,
+    ){
     }
 
     #[Route(methods: 'POST')]
-    public function new(): Response
+    public function new(Request $request): JsonResponse
     {
-        $food = new Food();
-        $food->setTitle('Poulet frit');
-        $food->setDescription('Cette qualité et ce goût par le chef Arnaud MICHANT.');
-        $food->setPrice(12);
+        $food = $this->serializer->deserialize($request->getContent(), Food::class, 'json');
         $food->setCreatedAt(new DateTimeImmutable());
 
-        // Tell Doctrine you want to (eventually) save the restaurant (no queries yet)
         $this->manager->persist($food);
-        // Actually executes the queries (i.e. the INSERT query)
         $this->manager->flush();
 
-        return $this->json(
-            ['message' => "Food resource created with {$food->getId()} id"],
-            Response::HTTP_CREATED,
-        );
+        $responseData = $this->serializer->serialize($food, 'json');
+        $location = $this->urlGenerator->generate(
+            'app_api_food_show',
+            ['id' => $food->getId()],
+            UrlGeneratorInterface::ABSOLUTE_URL);
+
+        return new JsonResponse($responseData, Response::HTTP_CREATED, ['Location' => $location], true);
     }
     #[Route('/{id}', name: 'show', methods: 'GET')]
-    public function show(int $id): Response
+    public function show(int $id): JsonResponse
     {
         $food = $this->repository->findOneBy(['id' => $id]);
 
         if (!$food) {
-            throw $this->createNotFoundException("No Food found for {$id} id");
+            $responseData = $this->serializer->serialize($food, 'json');
+            return new JsonResponse($responseData, Response::HTTP_OK, [], true);
         }
 
-        return $this->json(
-            ['message' => "A Food was found : {$food->getName()} for {$food->getId()} id"]
-        );
+        return new JsonResponse($food, Response::HTTP_NOT_FOUND);
     }
     #[Route('/{id}', name: 'edit', methods: 'PUT')]
-    public function edit(int $id): Response
+    public function edit(int $id, Request $request): JsonResponse
     {
         $food = $this->repository->findOneBy(['id' => $id]);
 
-        if (!$food) {
-            throw $this->createNotFoundException("No Food found for {$id} id");
+        if ($food) {
+            $food = $this->serializer->deserialize(
+                $request->getContent(),
+                Food::class,
+                'json',
+                [AbstractNormalizer::OBJECT_TO_POPULATE => $food]
+            );
+            $food->setUpdatedAt(new DateTimeImmutable());
+            $this->manager->flush();
+
+            return new JsonResponse(null, Response::HTTP_NO_CONTENT);
         }
 
-        $food->setTitle('Food title updated');
-        $food->setDescription('Food description updated');
-        $food->setPrice('Food price updated');
-        $this->manager->flush();
-
-        return $this->redirectToRoute('app_api_food_show', ['id' => $food->getId()]);
+        return new JsonResponse(null, Response::HTTP_NOT_FOUND);
     }
     #[Route('/{id}', name: 'delete', methods: 'DELETE')]
     public function delete(int $id): Response
