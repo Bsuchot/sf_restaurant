@@ -58,6 +58,7 @@ final class RestaurantController extends AbstractController
         }
 
         $restaurant->setName('Restaurant name updated');
+        $restaurant->setDescription('Restaurant description updated');
         $this->manager->flush();
 
         return $this->redirectToRoute('app_api_restaurant_show', ['id' => $restaurant->getId()]);
