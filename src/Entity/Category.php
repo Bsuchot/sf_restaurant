@@ -25,21 +25,21 @@ class Category
     private ?\DateTimeImmutable $updatedAt = null;
 
     /**
-     * @var Collection<int, Menu>
-     */
-    #[ORM\ManyToMany(targetEntity: Menu::class, inversedBy: 'categories')]
-    private Collection $menu;
-
-    /**
      * @var Collection<int, Food>
      */
-    #[ORM\ManyToMany(targetEntity: Food::class, mappedBy: 'category')]
-    private Collection $food;
+    #[ORM\ManyToMany(targetEntity: Food::class, inversedBy: 'categories')]
+    private Collection $Food;
+
+    /**
+     * @var Collection<int, Menu>
+     */
+    #[ORM\ManyToMany(targetEntity: Menu::class, mappedBy: 'Category')]
+    private Collection $menus;
 
     public function __construct()
     {
-        $this->menu = new ArrayCollection();
-        $this->food = new ArrayCollection();
+        $this->Food = new ArrayCollection();
+        $this->menus = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -84,42 +84,17 @@ class Category
     }
 
     /**
-     * @return Collection<int, Menu>
-     */
-    public function getMenu(): Collection
-    {
-        return $this->menu;
-    }
-
-    public function addMenu(Menu $menu): static
-    {
-        if (!$this->menu->contains($menu)) {
-            $this->menu->add($menu);
-        }
-
-        return $this;
-    }
-
-    public function removeMenu(Menu $menu): static
-    {
-        $this->menu->removeElement($menu);
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, Food>
      */
     public function getFood(): Collection
     {
-        return $this->food;
+        return $this->Food;
     }
 
     public function addFood(Food $food): static
     {
-        if (!$this->food->contains($food)) {
-            $this->food->add($food);
-            $food->addCategory($this);
+        if (!$this->Food->contains($food)) {
+            $this->Food->add($food);
         }
 
         return $this;
@@ -127,8 +102,33 @@ class Category
 
     public function removeFood(Food $food): static
     {
-        if ($this->food->removeElement($food)) {
-            $food->removeCategory($this);
+        $this->Food->removeElement($food);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Menu>
+     */
+    public function getMenus(): Collection
+    {
+        return $this->menus;
+    }
+
+    public function addMenu(Menu $menu): static
+    {
+        if (!$this->menus->contains($menu)) {
+            $this->menus->add($menu);
+            $menu->addCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMenu(Menu $menu): static
+    {
+        if ($this->menus->removeElement($menu)) {
+            $menu->removeCategory($this);
         }
 
         return $this;

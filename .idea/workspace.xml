@@ -1,31 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="708f2ac0-3ae9-466d-adb2-9ab4028daae4" name="Changes" comment="add CategoryController">
-      <change afterPath="$PROJECT_DIR$/.idea/commandlinetools/Symfony_05_08_2026_12_34.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/commandlinetools/schemas/frameworkDescriptionVersion1.1.4.xsd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/packages/doctrine.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/packages/doctrine_migrations.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations/Version20260813113605.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations/Version20260813114421.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations/Version20260813115905.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations/Version20260813121139.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Entity/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Repository/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+    <list default="true" id="708f2ac0-3ae9-466d-adb2-9ab4028daae4" name="Changes" comment="maj composer symfony">
       <change beforePath="$PROJECT_DIR$/.idea/Restaurant.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Restaurant.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/bundles.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/bundles.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/reference.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/reference.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/CategoryController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/CategoryController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/FoodController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/FoodController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/RestaurantController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/RestaurantController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/CategoryController.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/FoodController.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/RestaurantController.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Booking.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Booking.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Category.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Category.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Food.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Food.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Menu.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Menu.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Picture.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Picture.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Restaurant.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Restaurant.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/UserRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/UserRepository.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/symfony.lock" beforeDir="false" afterPath="$PROJECT_DIR$/symfony.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -122,6 +116,14 @@
       <path value="$PROJECT_DIR$/vendor/webmozart/assert" />
       <path value="$PROJECT_DIR$/vendor/phpdocumentor/reflection-docblock" />
       <path value="$PROJECT_DIR$/vendor/nelmio/cors-bundle" />
+      <path value="$PROJECT_DIR$/vendor/psr/clock" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php83" />
+      <path value="$PROJECT_DIR$/vendor/symfony/clock" />
+      <path value="$PROJECT_DIR$/vendor/symfony/security-http" />
+      <path value="$PROJECT_DIR$/vendor/symfony/security-core" />
+      <path value="$PROJECT_DIR$/vendor/symfony/password-hasher" />
+      <path value="$PROJECT_DIR$/vendor/symfony/security-csrf" />
+      <path value="$PROJECT_DIR$/vendor/symfony/security-bundle" />
     </include_path>
   </component>
   <component name="ProblemsViewState">
@@ -179,7 +181,12 @@
       <workItem from="1786618231562" duration="1088000" />
       <workItem from="1786619402232" duration="289000" />
       <workItem from="1786619745714" duration="4219000" />
-      <workItem from="1786970080480" duration="3876000" />
+      <workItem from="1786970080480" duration="4187000" />
+      <workItem from="1786974317961" duration="70000" />
+      <workItem from="1786974705363" duration="243000" />
+      <workItem from="1786981396332" duration="111000" />
+      <workItem from="1786981695489" duration="1460000" />
+      <workItem from="1787141337636" duration="2756000" />
     </task>
     <task id="LOCAL-00001" summary="entity Booking">
       <option name="closed" value="true" />
@@ -381,16 +388,45 @@
       <option name="project" value="LOCAL" />
       <updated>1786971227217</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="maj CategoryController">
+      <option name="closed" value="true" />
+      <created>1786973998739</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1786973998739</updated>
+    </task>
+    <task id="LOCAL-00027" summary="maj FoodController">
+      <option name="closed" value="true" />
+      <created>1786974011740</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1786974011740</updated>
+    </task>
+    <task id="LOCAL-00028" summary="maj RestaurantController">
+      <option name="closed" value="true" />
+      <created>1786974021404</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1786974021404</updated>
+    </task>
+    <task id="LOCAL-00029" summary="maj composer symfony">
+      <option name="closed" value="true" />
+      <created>1786974068126</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1786974068126</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="entity Booking" />
-    <MESSAGE value="entity Category" />
-    <MESSAGE value="entity Food" />
     <MESSAGE value="entity Menu" />
     <MESSAGE value="entity Picture" />
     <MESSAGE value="entity Restaurant" />
@@ -410,9 +446,12 @@
     <MESSAGE value="add relation User" />
     <MESSAGE value="maj composer" />
     <MESSAGE value="add RestaurantController" />
-    <MESSAGE value="maj RestaurantController" />
     <MESSAGE value="add FoodController" />
     <MESSAGE value="add CategoryController" />
-    <option name="LAST_COMMIT_MESSAGE" value="add CategoryController" />
+    <MESSAGE value="maj CategoryController" />
+    <MESSAGE value="maj FoodController" />
+    <MESSAGE value="maj RestaurantController" />
+    <MESSAGE value="maj composer symfony" />
+    <option name="LAST_COMMIT_MESSAGE" value="maj composer symfony" />
   </component>
 </project>

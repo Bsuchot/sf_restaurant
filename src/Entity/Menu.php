@@ -32,18 +32,17 @@ class Menu
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'menus')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Restaurant $restaurant = null;
+    private ?Restaurant $Restaurant = null;
 
     /**
      * @var Collection<int, Category>
      */
-    #[ORM\ManyToMany(targetEntity: Category::class, mappedBy: 'menu')]
-    private Collection $categories;
+    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'menus')]
+    private Collection $Category;
 
     public function __construct()
     {
-        $this->categories = new ArrayCollection();
+        $this->Category = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -113,12 +112,12 @@ class Menu
 
     public function getRestaurant(): ?Restaurant
     {
-        return $this->restaurant;
+        return $this->Restaurant;
     }
 
-    public function setRestaurant(?Restaurant $restaurant): static
+    public function setRestaurant(?Restaurant $Restaurant): static
     {
-        $this->restaurant = $restaurant;
+        $this->Restaurant = $Restaurant;
 
         return $this;
     }
@@ -126,16 +125,15 @@ class Menu
     /**
      * @return Collection<int, Category>
      */
-    public function getCategories(): Collection
+    public function getCategory(): Collection
     {
-        return $this->categories;
+        return $this->Category;
     }
 
     public function addCategory(Category $category): static
     {
-        if (!$this->categories->contains($category)) {
-            $this->categories->add($category);
-            $category->addMenu($this);
+        if (!$this->Category->contains($category)) {
+            $this->Category->add($category);
         }
 
         return $this;
@@ -143,9 +141,7 @@ class Menu
 
     public function removeCategory(Category $category): static
     {
-        if ($this->categories->removeElement($category)) {
-            $category->removeMenu($this);
-        }
+        $this->Category->removeElement($category);
 
         return $this;
     }

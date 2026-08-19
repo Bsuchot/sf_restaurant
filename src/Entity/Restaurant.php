@@ -19,7 +19,7 @@ class Restaurant
     #[ORM\Column(length: 32)]
     private ?string $name = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(length: 255)]
     private ?string $description = null;
 
     #[ORM\Column]
@@ -38,31 +38,27 @@ class Restaurant
     private ?\DateTimeImmutable $updatedAt = null;
 
     /**
-     * @var Collection<int, Picture>
-     */
-    #[ORM\OneToMany(targetEntity: Picture::class, mappedBy: 'restaurant', orphanRemoval: true)]
-    private Collection $pictures;
-
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $owner = null;
-
-    /**
      * @var Collection<int, Booking>
      */
-    #[ORM\OneToMany(targetEntity: Booking::class, mappedBy: 'restaurant', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Booking::class, mappedBy: 'Restaurant', orphanRemoval: true)]
     private Collection $bookings;
+
+    /**
+     * @var Collection<int, Picture>
+     */
+    #[ORM\OneToMany(targetEntity: Picture::class, mappedBy: 'Restaurant', orphanRemoval: true)]
+    private Collection $pictures;
 
     /**
      * @var Collection<int, Menu>
      */
-    #[ORM\OneToMany(targetEntity: Menu::class, mappedBy: 'restaurant', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Menu::class, mappedBy: 'Restaurant')]
     private Collection $menus;
 
     public function __construct()
     {
-        $this->pictures = new ArrayCollection();
         $this->bookings = new ArrayCollection();
+        $this->pictures = new ArrayCollection();
         $this->menus = new ArrayCollection();
     }
 
@@ -156,48 +152,6 @@ class Restaurant
     }
 
     /**
-     * @return Collection<int, Picture>
-     */
-    public function getPictures(): Collection
-    {
-        return $this->pictures;
-    }
-
-    public function addPicture(Picture $picture): static
-    {
-        if (!$this->pictures->contains($picture)) {
-            $this->pictures->add($picture);
-            $picture->setRestaurant($this);
-        }
-
-        return $this;
-    }
-
-    public function removePicture(Picture $picture): static
-    {
-        if ($this->pictures->removeElement($picture)) {
-            // set the owning side to null (unless already changed)
-            if ($picture->getRestaurant() === $this) {
-                $picture->setRestaurant(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getOwner(): ?User
-    {
-        return $this->owner;
-    }
-
-    public function setOwner(User $owner): static
-    {
-        $this->owner = $owner;
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, Booking>
      */
     public function getBookings(): Collection
@@ -221,6 +175,36 @@ class Restaurant
             // set the owning side to null (unless already changed)
             if ($booking->getRestaurant() === $this) {
                 $booking->setRestaurant(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Picture>
+     */
+    public function getPictures(): Collection
+    {
+        return $this->pictures;
+    }
+
+    public function addPicture(Picture $picture): static
+    {
+        if (!$this->pictures->contains($picture)) {
+            $this->pictures->add($picture);
+            $picture->setRestaurant($this);
+        }
+
+        return $this;
+    }
+
+    public function removePicture(Picture $picture): static
+    {
+        if ($this->pictures->removeElement($picture)) {
+            // set the owning side to null (unless already changed)
+            if ($picture->getRestaurant() === $this) {
+                $picture->setRestaurant(null);
             }
         }
 
@@ -256,5 +240,4 @@ class Restaurant
 
         return $this;
     }
-
 }

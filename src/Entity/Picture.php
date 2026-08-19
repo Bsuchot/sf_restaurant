@@ -14,10 +14,10 @@ class Picture
     private ?int $id = null;
 
     #[ORM\Column(length: 128)]
-    private ?string $slug = null;
+    private ?string $title = null;
 
     #[ORM\Column(length: 128)]
-    private ?string $title = null;
+    private ?string $slug = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -27,23 +27,11 @@ class Picture
 
     #[ORM\ManyToOne(inversedBy: 'pictures')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Restaurant $restaurant = null;
+    private ?Restaurant $Restaurant = null;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(string $slug): static
-    {
-        $this->slug = $slug;
-
-        return $this;
     }
 
     public function getTitle(): ?string
@@ -54,6 +42,18 @@ class Picture
     public function setTitle(string $title): static
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }
@@ -84,12 +84,12 @@ class Picture
 
     public function getRestaurant(): ?Restaurant
     {
-        return $this->restaurant;
+        return $this->Restaurant;
     }
 
-    public function setRestaurant(?Restaurant $restaurant): static
+    public function setRestaurant(?Restaurant $Restaurant): static
     {
-        $this->restaurant = $restaurant;
+        $this->Restaurant = $Restaurant;
 
         return $this;
     }

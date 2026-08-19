@@ -34,12 +34,12 @@ class Food
     /**
      * @var Collection<int, Category>
      */
-    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'food')]
-    private Collection $category;
+    #[ORM\ManyToMany(targetEntity: Category::class, mappedBy: 'Food_Category')]
+    private Collection $categories;
 
     public function __construct()
     {
-        $this->category = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -110,15 +110,16 @@ class Food
     /**
      * @return Collection<int, Category>
      */
-    public function getCategory(): Collection
+    public function getCategories(): Collection
     {
-        return $this->category;
+        return $this->categories;
     }
 
     public function addCategory(Category $category): static
     {
-        if (!$this->category->contains($category)) {
-            $this->category->add($category);
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+            $category->addFoodCategory($this);
         }
 
         return $this;
@@ -126,7 +127,9 @@ class Food
 
     public function removeCategory(Category $category): static
     {
-        $this->category->removeElement($category);
+        if ($this->categories->removeElement($category)) {
+            $category->removeFoodCategory($this);
+        }
 
         return $this;
     }
