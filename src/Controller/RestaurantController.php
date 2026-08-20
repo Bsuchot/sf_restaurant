@@ -14,7 +14,9 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
+use OpenApi\Attributes as OA;
 
+#[Route('/api/restaurant', name: 'app_api_restaurant_')]
 final class RestaurantController extends AbstractController
 {
 
@@ -28,6 +30,40 @@ final class RestaurantController extends AbstractController
     }
 
     #[Route(methods: 'POST')]
+    #[OA\Post(
+        path: '/api/restaurant',
+        summary: "Création d'un nouveau restaurant",
+        requestBody: new OA\RequestBody(
+            required: true,
+            description: "Données du restaurant à créer",
+            content: new OA\JsonContent(
+                type: 'object',
+                properties: [
+                    new OA\Property(property: 'name', type: 'string', example: 'Restaurant'),
+                    new OA\Property(property: 'description', type: 'string', example: 'Une description du restaurant'),
+                    new OA\Property(property: 'amOpeningTime', type: 'array', items: new OA\Items(type: 'string'), example: ['12:00', '14:00']),
+                    new OA\Property(property: 'pmOpeningTime', type: 'array', items: new OA\Items(type: 'string'), example: ['19:00', '23:00']),
+                    new OA\Property(property: 'maxGuest', type: 'integer', example: 30),
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 201,
+                description: 'Restaurant créer avec succès',
+                content: new OA\JsonContent(
+                    type: 'object',
+                    properties: [
+                        new OA\Property(property: 'name', type: 'string', example: "Restaurant"),
+                        new OA\Property(property: 'description', type: 'string', example: 'Une description du restaurant'),
+                        new OA\Property(property: 'amOpeningTime', type: 'json', example: '[12:00, 14:00]'),
+                        new OA\Property(property: 'pmOpeningTime', type: 'json', example: '[19:00, 23:00]'),
+                        new OA\Property(property: 'maxGuest', type: 'smallinteger', example: '30'),
+                    ]
+                )
+            )
+        ]
+    )]
     public function new(Request $request): JsonResponse
     {
         $restaurant = $this->serializer->deserialize($request->getContent(), Restaurant::class, 'json');
@@ -47,6 +83,40 @@ final class RestaurantController extends AbstractController
         return new JsonResponse($responseData, Response::HTTP_CREATED, ["Location" => $location], true);
     }
     #[Route('/{id}', name: 'show', methods: 'GET')]
+    #[OA\Get(
+        path: '/api/restaurant/{id}',
+        summary: "Afficher un restaurant par ID",
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                in: 'path',
+                required: true,
+                description: 'Identifiant du restaurant',
+                schema: new OA\Schema(type: 'integer')
+            )
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Restaurant trouvé',
+                content: new OA\JsonContent(
+                    type: 'object',
+                    properties: [
+                        new OA\Property(property: 'id', type: 'integer', example: 1),
+                        new OA\Property(property: 'name', type: 'string', example: 'Restaurant'),
+                        new OA\Property(property: 'description', type: 'string', example: 'Une description du restaurant'),
+                        new OA\Property(property: 'amOpeningTime', type: 'array', items: new OA\Items(type: 'string'), example: ['12:00', '14:00']),
+                        new OA\Property(property: 'pmOpeningTime', type: 'array', items: new OA\Items(type: 'string'), example: ['19:00', '23:00']),
+                        new OA\Property(property: 'maxGuest', type: 'integer', example: 30),
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Restaurant non trouvé'
+            )
+        ]
+    )]
     public function show(int $id): JsonResponse
     {
         $restaurant = $this->repository->findOneBy(['id' => $id]);
@@ -60,6 +130,43 @@ final class RestaurantController extends AbstractController
         return new jsonResponse(null, Response::HTTP_NOT_FOUND);
     }
     #[Route('/{id}', name: 'edit', methods: 'PUT')]
+    #[OA\Put(
+        path: '/api/restaurant/{id}',
+        summary: "Modifier un restaurant existant",
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                in: 'path',
+                required: true,
+                description: 'Identifiant du restaurant',
+                schema: new OA\Schema(type: 'integer')
+            )
+        ],
+        requestBody: new OA\RequestBody(
+            required: true,
+            description: 'Champs du restaurant à mettre à jour',
+            content: new OA\JsonContent(
+                type: 'object',
+                properties: [
+                    new OA\Property(property: 'name', type: 'string', example: 'Restaurant'),
+                    new OA\Property(property: 'description', type: 'string', example: 'Une description du restaurant'),
+                    new OA\Property(property: 'amOpeningTime', type: 'array', items: new OA\Items(type: 'string'), example: ['12:00', '14:00']),
+                    new OA\Property(property: 'pmOpeningTime', type: 'array', items: new OA\Items(type: 'string'), example: ['19:00', '23:00']),
+                    new OA\Property(property: 'maxGuest', type: 'integer', example: 30),
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 204,
+                description: 'Restaurant mis à jour avec succès'
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Restaurant non trouvé'
+            )
+        ]
+    )]
     public function edit(int $id, Request $request): JsonResponse
     {
         $restaurant = $this->repository->findOneBy(['id' => $id]);
@@ -81,6 +188,29 @@ final class RestaurantController extends AbstractController
         return new jsonResponse(null, Response::HTTP_NOT_FOUND);
     }
     #[Route('/{id}', name: 'delete', methods: 'DELETE')]
+    #[OA\Delete(
+        path: '/api/restaurant/{id}',
+        summary: "Supprimer un restaurant",
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                in: 'path',
+                required: true,
+                description: 'Identifiant du restaurant',
+                schema: new OA\Schema(type: 'integer')
+            )
+        ],
+        responses: [
+            new OA\Response(
+                response: 204,
+                description: 'Restaurant supprimé avec succès'
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Restaurant non trouvé'
+            )
+        ]
+    )]
     public function delete(int $id): JsonResponse
     {
         $restaurant = $this->repository->findOneBy(['id' => $id]);
