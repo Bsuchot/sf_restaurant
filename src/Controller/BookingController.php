@@ -48,7 +48,7 @@ final class BookingController extends AbstractController
         return new JsonResponse($responseData, Response::HTTP_CREATED, ["Location" => $location], true);
     }
     #[Route('/{id}', name: 'show', methods: 'GET')]
-    public function show(int $id): Response
+    public function show(int $id): JsonResponse
     {
         $booking = $this->repository->findOneBy(['id' => $id]);
 
@@ -61,7 +61,7 @@ final class BookingController extends AbstractController
         return new jsonResponse(null, Response::HTTP_NOT_FOUND);
     }
     #[Route('/{id}', name: 'edit', methods: 'PUT')]
-    public function edit(int $id, Request $request): Response
+    public function edit(int $id, Request $request): JsonResponse
     {
         $booking = $this->repository->findOneBy(['id' => $id]);
 
@@ -82,7 +82,7 @@ final class BookingController extends AbstractController
         return new jsonResponse(null, Response::HTTP_NOT_FOUND);
     }
     #[Route('/{id}', name: 'delete', methods: 'DELETE')]
-    public function delete(int $id): Response
+    public function delete(int $id): JsonResponse
     {
         $booking = $this->repository->findOneBy(['id' => $id]);
         if (!$booking) {
